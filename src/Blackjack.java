@@ -11,6 +11,7 @@ import java.awt.event.*;    //this makes our program more than just a command li
 import java.util.ArrayList; //ArrayList will keep track of the deck, player hand, and dealer's hand 
 import java.util.Random;    //Random will help us shuffle the cards
 import javax.swing.*;       //Swing will be used to access a variety of useful things
+import javax.swing.border.Border;
 
 //the bulk of our code will be inside the class Blackjack
 public class Blackjack {
@@ -31,26 +32,7 @@ public class Blackjack {
         //this make the printed details of a card easier to understand
         public String toString() {
             //When displaying cards to the game screen, we want this to match the png card names to make things easier
-            String str = new String("Botany_Deck/Botany_Deck_" + getSuit()); //our return value
-
-            str += "/SPR_Botany_" + getSuit();
-
-            String digit = "" + getValue();
-
-            if (Integer.valueOf(digit) >= 10) { //Ace or Face Cards
-                if (value == "A") {
-                    digit = "1_Ace";
-                } else if (value == "J") {
-                    digit = "11_Jack";
-                } else if (value == "Q") {
-                    digit = "12_Queen";
-                } else if (value == "K"){
-                    digit = "13_King";
-                }
-            }
-
-            str += "_" + digit; //TODO
-            return str;
+            return value + "_" + type;
         }
 
         //this method returns the numerical value given by each card
@@ -79,7 +61,25 @@ public class Blackjack {
 
         //this gives us a convienent way to write the path to each card
         public String getImagePath() {
-            return "./cards/" + toString() + ".png"; 
+            String str = new String("Botany_Deck/Botany_Deck_" + getSuit()); //our return value
+
+            str += "/SPR_Botany_" + getSuit() + "_";
+
+            String digit = "" + getValue(); //uses the value to convert to image path
+            if (Integer.valueOf(digit) >= 10) { //Ace or Face Cards
+                if (value == "A") {
+                    digit = "1_Ace";
+                } else if (value == "J") {
+                    digit = "11_Jack";
+                } else if (value == "Q") {
+                    digit = "12_Queen";
+                } else if (value == "K"){
+                    digit = "13_King";
+                }
+            }
+            str += digit;
+
+            return "./cards/" + str + ".png"; 
         }
 
         private String getSuit() {
@@ -123,7 +123,8 @@ public class Blackjack {
     int cardWidth = 110; //ratio should be 1/1.4
     int cardHeight = 154;
 
-    JFrame frame = new JFrame("Blackjack ;)");
+    JFrame frame = new JFrame("Blackjack ;>");
+
     //this will be used for drawing 
     JPanel gamePanel = new JPanel() { 
         //to draw in the JPanel we need to overide a method
@@ -185,22 +186,27 @@ public class Blackjack {
         }
     };
     
+    JPanel botPanel = new JPanel(new BorderLayout());
     JPanel buttonPanel = new JPanel();
     JButton hitButton = new JButton("Hit");   
     JButton stayButton = new JButton("Stay");
     JButton nextGameButton = new JButton("Next Game");
     JButton betButton = new JButton("Bet"); //button to make a bet
+    JTextField txtInput = new JTextField("");
 
-    //this, as you might expect, starts the game
+    //this, as you might expect, starts the game 
+    //it's a huge constructor
     Blackjack() {
         startGame();
 
+        //main frame
         frame.setVisible(true);
         frame.setSize(boardWidth, boardHeight);
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //when the player clicks x on the window, it terminates the program
-    
+        
+        //main game panel
         gamePanel.setLayout(new BorderLayout());
         gamePanel.setBackground(new Color (87, 148, 144));
         frame.add(gamePanel);
@@ -214,7 +220,11 @@ public class Blackjack {
         buttonPanel.add(stayButton);
         nextGameButton.setFocusable(false);
         buttonPanel.add(nextGameButton);
-        frame.add(buttonPanel, BorderLayout.SOUTH);
+        botPanel.add(buttonPanel);
+        botPanel.add(txtInput, BorderLayout.SOUTH);
+        frame.add(botPanel, BorderLayout.SOUTH); //adds to main frame
+        //frame.add(txtInput);
+        
 
         hitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -247,15 +257,26 @@ public class Blackjack {
             }     
         });
 
+        betButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                //user inputs a bet amount of their total
+                //then the bet button is disabled
+            }
+        });
+
         nextGameButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 hitButton.setEnabled(true);
                 stayButton.setEnabled(true);
+                betButton.setEnabled(true);
 
                 startGame();
                 gamePanel.repaint();
             }
         });
+
+        
+
 
         gamePanel.repaint(); //will call it within the constrcutor to update the game panel
   
