@@ -191,9 +191,16 @@ public class Blackjack {
     JButton hitButton = new JButton("Hit");   
     JButton stayButton = new JButton("Stay");
     JButton nextGameButton = new JButton("Next Game");
-    JButton betButton = new JButton("Bet"); //button to make a bet
-    JTextField txtInput = new JTextField("");
 
+    //Betting System
+    int money = 100;
+    int bet = 0;
+    JButton betButton = new JButton("Bet"); //button to make a bet
+    JTextField txtInput = new JTextField(""); //input bet amount
+    JLabel moneyLabel = new JLabel("Total: $" + money);
+   
+
+    
     //this, as you might expect, starts the game 
     //it's a huge constructor
     Blackjack() {
@@ -206,6 +213,10 @@ public class Blackjack {
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //when the player clicks x on the window, it terminates the program
         
+
+        //adds money lable to frame
+        frame.add(moneyLabel, BorderLayout.NORTH);
+    
         //main game panel
         gamePanel.setLayout(new BorderLayout());
         gamePanel.setBackground(new Color (87, 148, 144));
@@ -220,10 +231,10 @@ public class Blackjack {
         buttonPanel.add(stayButton);
         nextGameButton.setFocusable(false);
         buttonPanel.add(nextGameButton);
+
+        //adds bottom panel to frame
         botPanel.add(buttonPanel);
-        botPanel.add(txtInput, BorderLayout.SOUTH);
         frame.add(botPanel, BorderLayout.SOUTH); //adds to main frame
-        //frame.add(txtInput);
         
 
         hitButton.addActionListener(new ActionListener() {
@@ -233,7 +244,18 @@ public class Blackjack {
                 playerAceCount += card.isAce() ? 1 : 0;
                 playerHand.add(card);
                 if (reducePlayerAce() > 21) { //A + 2 + J --> 1 + 2 + J rather than 11
+                   //finishes the game on it's own
                     hitButton.setEnabled(false);
+                    stayButton.setEnabled(false);
+
+                    //rules say the dealer must draw untill they have a sum of 17 or greater
+                    while (dealerSum < 17) {
+                        card = deck.remove(deck.size() - 1);
+                        dealerHand.add(card);
+                        dealerSum += card.getValue();
+                        dealerAceCount += card.isAce() ? 1 : 0;
+                    }   
+                    gamePanel.repaint();
                 } 
 
                 gamePanel.repaint(); //this will call our paint component method
@@ -259,10 +281,31 @@ public class Blackjack {
 
         betButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                //user inputs a bet amount of their total
-                //then the bet button is disabled
+                botPanel.add(txtInput, BorderLayout.SOUTH); //adds txt input
+                botPanel.revalidate(); //refreshes info
+                botPanel.repaint(); //redraws info
+                betButton.setEnabled(false);
+
+                
             }
         });
+
+        txtInput.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                //user inputs a bet amount of their total
+                bet = Integer.parseInt(txtInput.getText());   //receive input from text field
+                System.out.println(bet);
+                moneyLabel.setText("Total: $" + money + "   Bet: $" + bet);
+
+                txtInput.setText("");
+                botPanel.remove(txtInput);
+                
+                botPanel.revalidate();
+                botPanel.repaint();
+                
+            }
+        });
+
 
         nextGameButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
