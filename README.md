@@ -20,8 +20,8 @@ I was inspired by a Reddit post where a user explained that the first thing they
 
 ## Potential Additions
 - A betting system <-- current WIP
-- New card designs
-- Nicer UI
+- New card designs <-- current WIP
+- Nicer UI <-- current WIP
 - Menu for game details
 
 

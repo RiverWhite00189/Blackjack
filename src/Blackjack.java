@@ -1,12 +1,13 @@
 //This is a tutorial guided Blackjack Program
 //all comments are my own personal notes
+    //it's a lot, I really wanted to understand the GUI haha
 
 //This file, Blackjack.java, is where all of the game's code will be
 //blackjack rules: https://bicyclecards.com/how-to-play/blackjack/
 
 //We will import several things to help us make the game
 import java.awt.*;          //java.awt is used for the GUI; graphic user interface
-import java.awt.event.*;        //this makes our program more than just a command line
+import java.awt.event.*;    //this makes our program more than just a command line
 import java.util.ArrayList; //ArrayList will keep track of the deck, player hand, and dealer's hand 
 import java.util.Random;    //Random will help us shuffle the cards
 import javax.swing.*;       //Swing will be used to access a variety of useful things
@@ -30,7 +31,26 @@ public class Blackjack {
         //this make the printed details of a card easier to understand
         public String toString() {
             //When displaying cards to the game screen, we want this to match the png card names to make things easier
-            return value + "-" + type;
+            String str = new String("Botany_Deck/Botany_Deck_" + getSuit()); //our return value
+
+            str += "/SPR_Botany_" + getSuit();
+
+            String digit = "" + getValue();
+
+            if (Integer.valueOf(digit) >= 10) { //Ace or Face Cards
+                if (value == "A") {
+                    digit = "1_Ace";
+                } else if (value == "J") {
+                    digit = "11_Jack";
+                } else if (value == "Q") {
+                    digit = "12_Queen";
+                } else if (value == "K"){
+                    digit = "13_King";
+                }
+            }
+
+            str += "_" + digit; //TODO
+            return str;
         }
 
         //this method returns the numerical value given by each card
@@ -59,7 +79,22 @@ public class Blackjack {
 
         //this gives us a convienent way to write the path to each card
         public String getImagePath() {
-            return "./cards/" + toString() + ".png";
+            return "./cards/" + toString() + ".png"; 
+        }
+
+        private String getSuit() {
+            String str = new String("");
+            if (type == "C") {
+                str +=  "Clubs";              
+            } else if (type == "D") {
+                str += "Diamonds";
+            } else if (type == "H") {
+                str += "Hearts";
+            } else if (type == "S") {
+                str += "Spades";
+            }
+
+            return str;
         }
     }
 
@@ -98,7 +133,7 @@ public class Blackjack {
 
             try {
             //draw hidden card
-            Image hiddenCardImg = new ImageIcon(getClass().getResource("./cards/BACK.png")).getImage();
+            Image hiddenCardImg = new ImageIcon(getClass().getResource("./cards/Botany_Deck/SPR_Card_Backs_Botany_Back.png")).getImage();
             if (!stayButton.isEnabled()) {
                 hiddenCardImg = new ImageIcon(getClass().getResource(hiddenCard.getImagePath())).getImage();
             }
@@ -127,7 +162,7 @@ public class Blackjack {
 
                 String message = "";
                 if (playerSum > 21) {
-                    message = "You Lose.";
+                    message = "Bust. You Lose.";
                 } else if (dealerSum > 21) {
                     message = "You Win!";
                 } else if (playerSum == dealerSum) {
@@ -154,6 +189,7 @@ public class Blackjack {
     JButton hitButton = new JButton("Hit");   
     JButton stayButton = new JButton("Stay");
     JButton nextGameButton = new JButton("Next Game");
+    JButton betButton = new JButton("Bet"); //button to make a bet
 
     //this, as you might expect, starts the game
     Blackjack() {
@@ -166,9 +202,12 @@ public class Blackjack {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //when the player clicks x on the window, it terminates the program
     
         gamePanel.setLayout(new BorderLayout());
-        gamePanel.setBackground(new Color (53, 101, 77));
+        gamePanel.setBackground(new Color (87, 148, 144));
         frame.add(gamePanel);
 
+        //adds buttons to the button panel
+        betButton.setFocusable(false);
+        buttonPanel.add(betButton);
         hitButton.setFocusable(false);
         buttonPanel.add(hitButton);
         stayButton.setFocusable(false);
@@ -217,7 +256,7 @@ public class Blackjack {
                 gamePanel.repaint();
             }
         });
-        
+
         gamePanel.repaint(); //will call it within the constrcutor to update the game panel
   
     }
