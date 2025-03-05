@@ -1,6 +1,8 @@
-//This is a tutorial guided Blackjack Progeam
-//This file, Blackjack.java, is where all of the games code will be
-//blackjack rules https://bicyclecards.com/how-to-play/blackjack/
+//This is a tutorial guided Blackjack Program
+//all comments are my own personal notes
+
+//This file, Blackjack.java, is where all of the game's code will be
+//blackjack rules: https://bicyclecards.com/how-to-play/blackjack/
 
 //We will import several things to help us make the game
 import java.awt.*;          //java.awt is used for the GUI; graphic user interface
