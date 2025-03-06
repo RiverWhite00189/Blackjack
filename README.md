@@ -28,4 +28,4 @@ I was inspired by a Reddit post where a user explained that the first thing they
 
 # Note:
   - Development was guided by a video tutorial by Kenny Yip Coding. (I didn't just make my first proper program out of thin air :/)
-  - Don't worry! I added a lot of new stuff, and changed it up a lot! All Add-ons are not based on any tutorial (it's 100% me :>)
+  - Don't worry! I added a lot of new stuff, and changed it up a lot! All add-ons are not based on any tutorial (it's 100% me :>)
