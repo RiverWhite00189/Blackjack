@@ -154,6 +154,7 @@ public class Blackjack {
                 g.drawImage(cardImg, (cardWidth + 5)*i + 20, 320, cardWidth, cardHeight, null);
             }
 
+            //game over sequence
             if (!stayButton.isEnabled()) {
                 dealerSum = reduceDealerAce();
                 playerSum = reducePlayerAce();
@@ -164,16 +165,23 @@ public class Blackjack {
                 String message = "";
                 if (playerSum > 21) {
                     message = "Bust. You Lose.";
+                    money -= bet;
                 } else if (dealerSum > 21) {
                     message = "You Win!";
+                    money += bet;
                 } else if (playerSum == dealerSum) {
                     message = "TIE";
                 } else if (playerSum > dealerSum) {
                     message  = "You Win!";
+                    money += bet;
                 } else if (playerSum < dealerSum) {
                     message  = "You Lose";
+                    money -= bet;
                 }
-                    
+
+                bet = 0;
+                moneyLabel.setText("Total: $" + money);
+    
                 g.setFont(new Font("Arial", Font.PLAIN, 30));
                 g.setColor(Color.white);
                 g.drawString(message, 220, 250);
@@ -297,9 +305,9 @@ public class Blackjack {
                 System.out.println(bet);
                 moneyLabel.setText("Total: $" + money + "   Bet: $" + bet);
 
+                //gets rid of the input box
                 txtInput.setText("");
                 botPanel.remove(txtInput);
-                
                 botPanel.revalidate();
                 botPanel.repaint();
                 
