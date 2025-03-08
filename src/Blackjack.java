@@ -155,7 +155,7 @@ public class Blackjack {
             }
 
             //game over sequence
-            if (!stayButton.isEnabled()) {
+            if (!stayButton.isEnabled() && nextGameButton.isEnabled()) {
                 dealerSum = reduceDealerAce();
                 playerSum = reducePlayerAce();
                 System.out.println("STAY:");
@@ -164,13 +164,13 @@ public class Blackjack {
 
                 String message = "";
                 if (playerSum > 21) {
-                    message = "Bust. You Lose.";
+                    message = "Bust.";
                     money -= bet;
                 } else if (dealerSum > 21) {
                     message = "You Win!";
                     money += bet;
                 } else if (playerSum == dealerSum) {
-                    message = "TIE";
+                    message = "Tie.";
                 } else if (playerSum > dealerSum) {
                     message  = "You Win!";
                     money += bet;
@@ -240,6 +240,10 @@ public class Blackjack {
         nextGameButton.setFocusable(false);
         buttonPanel.add(nextGameButton);
 
+        hitButton.setEnabled(false);
+        stayButton.setEnabled(false);
+        nextGameButton.setEnabled(false);
+
         //adds bottom panel to frame
         botPanel.add(buttonPanel);
         frame.add(botPanel, BorderLayout.SOUTH); //adds to main frame
@@ -255,7 +259,7 @@ public class Blackjack {
                    //finishes the game on it's own
                     hitButton.setEnabled(false);
                     stayButton.setEnabled(false);
-
+                    nextGameButton.setEnabled(true);
                     //rules say the dealer must draw untill they have a sum of 17 or greater
                     while (dealerSum < 17) {
                         card = deck.remove(deck.size() - 1);
@@ -275,6 +279,7 @@ public class Blackjack {
             public void actionPerformed(ActionEvent e) {
                 hitButton.setEnabled(false);
                 stayButton.setEnabled(false);
+                nextGameButton.setEnabled(true);
 
                 //rules say the dealer must draw untill they have a sum of 17 or greater
                 while (dealerSum < 17) {
@@ -306,6 +311,9 @@ public class Blackjack {
                 moneyLabel.setText("Total: $" + money + "   Bet: $" + bet);
 
                 //gets rid of the input box
+                hitButton.setEnabled(true);
+                stayButton.setEnabled(true);
+
                 txtInput.setText("");
                 botPanel.remove(txtInput);
                 botPanel.revalidate();
@@ -317,9 +325,10 @@ public class Blackjack {
 
         nextGameButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                hitButton.setEnabled(true);
-                stayButton.setEnabled(true);
+                hitButton.setEnabled(false);
+                stayButton.setEnabled(false);
                 betButton.setEnabled(true);
+                nextGameButton.setEnabled(false);
 
                 startGame();
                 gamePanel.repaint();
