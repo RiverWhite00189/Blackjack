@@ -11,7 +11,7 @@ import java.awt.event.*;    //this makes our program more than just a command li
 import java.util.ArrayList; //ArrayList will keep track of the deck, player hand, and dealer's hand 
 import java.util.Random;    //Random will help us shuffle the cards
 import javax.swing.*;       //Swing will be used to access a variety of useful things
-import javax.swing.border.Border;
+import javax.swing.plaf.basic.BasicToggleButtonUI;
 
 //the bulk of our code will be inside the class Blackjack
 public class Blackjack {
@@ -135,7 +135,7 @@ public class Blackjack {
             try {
             //draw hidden card
             Image hiddenCardImg = new ImageIcon(getClass().getResource("./cards/Botany_Deck/SPR_Card_Backs_Botany_Back.png")).getImage();
-            if (!stayButton.isEnabled()) {
+            if (!stayButton.isEnabled() && nextGameButton.isEnabled()) {
                 hiddenCardImg = new ImageIcon(getClass().getResource(hiddenCard.getImagePath())).getImage();
             }
             g.drawImage(hiddenCardImg, 20, 20, cardWidth, cardHeight, null);
@@ -212,6 +212,7 @@ public class Blackjack {
     //this, as you might expect, starts the game 
     //it's a huge constructor
     Blackjack() {
+
         startGame();
 
         //main frame
@@ -243,6 +244,7 @@ public class Blackjack {
         hitButton.setEnabled(false);
         stayButton.setEnabled(false);
         nextGameButton.setEnabled(false);
+        betButton.setEnabled(true);
 
         //adds bottom panel to frame
         botPanel.add(buttonPanel);
