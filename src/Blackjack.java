@@ -134,7 +134,9 @@ public class Blackjack {
 
             try {
             //draw hidden card
+            //initally it's only it's back
             Image hiddenCardImg = new ImageIcon(getClass().getResource("./cards/Botany_Deck/SPR_Card_Backs_Botany_Back.png")).getImage();
+            //we update it when gameover
             if (!stayButton.isEnabled() && nextGameButton.isEnabled()) {
                 hiddenCardImg = new ImageIcon(getClass().getResource(hiddenCard.getImagePath())).getImage();
             }
